@@ -62,5 +62,16 @@ function is_on_git()
     git rev-parse 2> /dev/null
 }
 
-PS1="$(get_git_branch)>"
+function br()
+{
+    g="$(git rev-parse 2> /dev/null)"
+
+    if [ "$g" != "" ]; then
+        echo ""
+    else
+        echo "dd"
+    fi
+}
+
+PS1="$(br) $(get_git_branch) : \W>"
 

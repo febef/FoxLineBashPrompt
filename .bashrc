@@ -64,14 +64,50 @@ function is_on_git()
 
 function br()
 {
-    g="$(git rev-parse 2> /dev/null)"
-
-    if [ "$g" != "" ]; then
-        echo ""
-    else
-        echo "dd"
-    fi
+     is_on_git &&  echo ""
 }
 
-PS1="$(br) $(get_git_branch) : \W>"
+function print_location()
+{
+    spwd="$(pwd)"
+    IFS='/' folders=($spwd)
+
+    fristfolder=${folders[@]:1:1}
+    length=${#folders[@]}
+
+    lastpos=$(($length - 1))
+    
+    lastfolder="${folders[$lastpos]}"
+
+
+    echo "$lastfolder $lastpos $length" 
+
+    path=""
+    tput setab 233
+    tput setaf 242
+
+    for f in ${folders[@]}
+    do 
+        if [ "$f" = $lastfolder ]
+        then
+            echo -n "  "
+          #  path+="$f"
+        elif [ "$f" != "" ]
+        then
+            path+="$f  "
+        fi       
+    done
+    echo -n "$path"
+    tput setaf 255
+    echo "$lastfolder"
+}
+
+
+function update_PS1()
+{
+    print_location
+    echo "$(date)   $(br) $(get_git_branch) "
+}
+
+PS1="\$(update_PS1) > "
 

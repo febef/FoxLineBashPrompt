@@ -51,9 +51,9 @@ function get_git_branch()
     branch_name="$(git symbolic-ref HEAD 2> /dev/null | sed -e 's/refs\/heads\///')"
     
     if [[ "$branch_name" != "" ]]; then
-        echo "$branch_name"
+        echo -n "$branch_name"
     else
-        echo "(no branch)"
+        echo -n "(no branch)"
     fi
 }
 
@@ -64,7 +64,23 @@ function is_on_git()
 
 function br()
 {
-     is_on_git &&  echo ""
+     is_on_git # &&  echo ""
+}
+
+function print_git_info()
+{
+    tput setaf 233
+    tput setab 235
+    echo -n ""
+    tput setaf 28
+    echo -n ""
+    tput setaf 24
+    tput bold
+    echo -n "$(get_git_branch)"
+    tput sgr0
+    tput setaf 235
+    echo -n ""
+    tput sgr0
 }
 
 function print_location()
@@ -74,40 +90,55 @@ function print_location()
 
     fristfolder=${folders[@]:1:1}
     length=${#folders[@]}
-
     lastpos=$(($length - 1))
-    
     lastfolder="${folders[$lastpos]}"
 
-
-    echo "$lastfolder $lastpos $length" 
-
-    path=""
-    tput setab 233
-    tput setaf 242
-
     for f in ${folders[@]}
-    do 
-        if [ "$f" = $lastfolder ]
+    do
+        if [ "$f" = "$lastfolder" ]
         then
-            echo -n "  "
-          #  path+="$f"
+            tput bold
+            tput setaf 255
+            echo -n "$lastfolder "
+            tput sgr0
+            tput setaf 233
+            echo ""
         elif [ "$f" != "" ]
         then
-            path+="$f  "
+            tput setab 233
+            tput setaf 242
+            echo -n "$f"
+            tput setaf 236
+            echo -n "  "
         fi       
     done
-    echo -n "$path"
-    tput setaf 255
-    echo "$lastfolder"
+    tput sgr0
 }
 
-
-function update_PS1()
+function print_user()
 {
-    print_location
-    echo "$(date)   $(br) $(get_git_branch) "
+
+    tput setab 233
+    tput setaf 24
+    echo -n ""
+    tput bold
+    tput setab 233
+    tput setaf 166
+    echo -n "$(whoami)"
+    tput sgr0
+    tput setaf 233
+    !(is_on_git) && echo -n ""
+
+    tput sgr0
 }
 
-PS1="\$(update_PS1) > "
+function datef()
+{
+    echo -n "$(date)"
+}
 
+
+
+PS1="\$(print_location)\$(print_user)\
+\$(is_on_git && print_git_info)
+"

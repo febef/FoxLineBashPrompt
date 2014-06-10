@@ -12,5 +12,7 @@ How to test
 
 Clone git repo in a folder x, and run TestFLBP.sh !
 
+pd: you need have installed powerline font.
+
 =================================================
 Thanks to sexy-bash-prompt : https://github.com/twolfson/sexy-bash-prompt

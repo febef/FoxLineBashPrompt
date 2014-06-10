@@ -7,7 +7,7 @@ FLBP is a simple  configuration for bash... PS1...
 [screenshot]: screenshot.png
 
 
-Who to test
+How to test
 ===========
 
 Clone git repo in a folder x, and run TestFLBP.sh !

@@ -33,7 +33,6 @@ if [ -x /usr/bin/dircolors ]; then
 fi
 
 alias mocp="mocp --theme trasparent-background"
-
 export TERM=xterm-256color
 
 #
@@ -254,8 +253,15 @@ function print_user()
     echo -n ""
     tput bold
     tput setab 233
-    tput setaf 166
     echo -n "$(whoami)"
+    if [ $? == 0 ]
+    then
+        tput setaf 34
+        echo -n "✔"
+    else 
+        tput setaf 160
+        echo -n "✘"
+    fi
     tput sgr0
     tput setaf 233
     !(is_on_git) && echo -n ""

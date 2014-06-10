@@ -34,7 +34,6 @@ fi
 
 #alias mocp="mocp --theme trasparent-background"
 export TERM=xterm-256color
-OLDSTATUSEXITCOMMAND=0
 
 #
 # Configure colors.
@@ -215,6 +214,17 @@ function print_git_info()
 # others functions
 #
 
+function isD_w()
+{
+    IFS=' ' data=($(ls -l -d $(pwd)))
+    if [[ "${data[0]:8:1}" == "w" || ( "${data[2]}" == "$(whoami)" &&  "${data[0]:2:1}" == "w"  ) || ( "${data[3]}" == "id -g -n $(whoami)" && "${data[0]:5:1}" == "w") ]]
+    then
+        echo "can write"
+    else 
+        echo "can't write"
+    fi
+}
+
 function print_location()
 {
     spwd="$(pwd)"
@@ -230,8 +240,18 @@ function print_location()
         if [ "$f" = "$lastfolder" ]
         then
             tput bold
+            tput setab 233
+            tput setaf 242
+
+            if [ "$(isD_w)" == "can't write" ] 
+            then
+                tput setaf 160
+                echo -n " "
+            fi 
+
             tput setaf 255
-            echo -n "$lastfolder "
+            echo -n " $lastfolder"
+
             tput sgr0
             tput setaf 233
             echo ""
@@ -239,9 +259,9 @@ function print_location()
         then
             tput setab 233
             tput setaf 242
-            echo -n "$f"
+            echo -n " $f "
             tput setaf 236
-            echo -n "  "
+            echo -n ""
         fi
     done
     tput sgr0

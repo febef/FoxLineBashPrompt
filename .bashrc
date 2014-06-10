@@ -32,8 +32,9 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
-alias mocp="mocp --theme trasparent-background"
+#alias mocp="mocp --theme trasparent-background"
 export TERM=xterm-256color
+OLDSTATUSEXITCOMMAND=0
 
 #
 # Configure colors.
@@ -255,13 +256,21 @@ function print_user()
     tput setab 233
     tput setaf 166
     echo -n "$(whoami)"
-    if [ $? == 0 ]
+    if [ "$(cat ~/.socr.bash)" == "0" ]
     then
         tput setaf 34
         echo -n "✔"
-    else 
+    else
+        tput sgr0
+        tput setab 233
+        tput setaf 236
+        echo -n ""
+        tput setab 233
+        tput setaf 88
+        echo -n "$(cat ~/.socr.bash)"
         tput setaf 160
         echo -n "✘"
+
     fi
     tput sgr0
     tput setaf 233
@@ -270,6 +279,11 @@ function print_user()
     tput sgr0
 }
 
-PS1="\$(print_location)\$(print_user)\
+function save_old_comand_result()
+{
+   echo "$?" > ~/.socr.bash
+}
+
+PS1="\$(save_old_comand_result)\$(print_location)\$(print_user)\
 \$(is_on_git && print_git_info)
 "

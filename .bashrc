@@ -253,6 +253,7 @@ function print_user()
     echo -n ""
     tput bold
     tput setab 233
+    tput setaf 166
     echo -n "$(whoami)"
     if [ $? == 0 ]
     then

@@ -3,7 +3,6 @@ FoxLineBashPromp
 
 FLBP is a simple  configuration for bash... PS1...
 
-Preview:
 ![FoxLineBashPrompt screenshot][screenshot]
 [screenshot]: screenshot.png
 =================================================

@@ -32,6 +32,8 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
+
+alias irssi='tmux new-session -s irc irssi'
 #alias mocp="mocp --theme trasparent-background"
 export TERM=xterm-256color
 
@@ -269,6 +271,16 @@ function print_location()
 
 function print_user()
 {
+
+    CountJobs=$(jobs | wc -l)
+
+    if [ $CountJobs != 0 ]
+    then
+        tput setab 24
+        tput setaf 233
+        echo -n "$CountJobs"
+    fi
+
     tput setab 233
     tput setaf 24
     echo -n ""

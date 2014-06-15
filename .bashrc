@@ -32,19 +32,48 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
+#function irc()
+#{
+#    if [ "$TMUX" == "" ]
+#    then
+#      
+#    if [ "$(tmux ls | grep irssi)" == "" ]
+#        then
+#            echo "todo apagado, prende tmux y irssi"
+#            tmux new-session -s irssi irssi
+#        fi
+#            echo "no esta tmux abierto en la terminal pero si irssi en una session tmux, attacha esa sesion con tmux"
+#            tmux attach -t irssi
+#
+#    else
+#
+#       if [ "$(tmux ls | grep irssi)" != "" ]
+#        then
+#            echo "tmux esta abierto y no existe la session de irssi, crea la session"
+#            
+#            tmux switch -t irssi
+#        fi
+    #        echo "tmux esta abierto y la session tambien, cambia a la session irssi"
+     #       tmux switch -t irssi
+      #      irssi
+#echo "NO IRSSI SESSION! :/"
 
-alias irssi='tmux new-session -s irc irssi'
+#fi
+#}
+#alias irssi='OLD_TMUX=$TMUX;TMUX="";tmux new-session -s irssi irssi;TMUX=OLD_TMUX'
+
+function ccd()
+{
+    cd $1
+    echo "$(pwd)" > ~/.lastcd
+}
+alias cd='ccd'
+alias lcd='cd "$(cat ~/.lastcd)"'
+
+alias pcolors='( x=`tput op` y=`printf %$((${COLUMNS}-6))s`;for i in {0..256};do o=00$i;echo -e ${o:${#o}-3:3} `tput setaf $i;tput setab $i`${y// /=}$x;done; )'
+
 #alias mocp="mocp --theme trasparent-background"
 export TERM=xterm-256color
-
-#
-# Configure colors.
-#
-
-
-#
-# Functions for git repositories.
-#
 
 # On branch this return the branch name else '(no branch)'.
 function get_git_branch()
@@ -286,7 +315,12 @@ function print_user()
     echo -n ""
     tput bold
     tput setab 233
-    tput setaf 166
+    if [ $(id -u) == 0  ]
+    then
+        tput setaf 160
+    else 
+        tput setaf 166
+    fi
     echo -n "$(whoami)"
     if [ "$(cat ~/.socr.bash)" == "0" ]
     then
@@ -303,7 +337,7 @@ function print_user()
         tput setaf 160
         echo -n "✘"
 
-    fi
+    fi 
     tput sgr0
     tput setaf 233
     !(is_on_git) && echo -n ""

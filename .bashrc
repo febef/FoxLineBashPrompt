@@ -32,36 +32,6 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
-#function irc()
-#{
-#    if [ "$TMUX" == "" ]
-#    then
-#      
-#    if [ "$(tmux ls | grep irssi)" == "" ]
-#        then
-#            echo "todo apagado, prende tmux y irssi"
-#            tmux new-session -s irssi irssi
-#        fi
-#            echo "no esta tmux abierto en la terminal pero si irssi en una session tmux, attacha esa sesion con tmux"
-#            tmux attach -t irssi
-#
-#    else
-#
-#       if [ "$(tmux ls | grep irssi)" != "" ]
-#        then
-#            echo "tmux esta abierto y no existe la session de irssi, crea la session"
-#            
-#            tmux switch -t irssi
-#        fi
-    #        echo "tmux esta abierto y la session tambien, cambia a la session irssi"
-     #       tmux switch -t irssi
-      #      irssi
-#echo "NO IRSSI SESSION! :/"
-
-#fi
-#}
-#alias irssi='OLD_TMUX=$TMUX;TMUX="";tmux new-session -s irssi irssi;TMUX=OLD_TMUX'
-
 function ccd()
 {
     cd $1
@@ -72,7 +42,6 @@ alias lcd='cd "$(cat ~/.lastcd)"'
 
 alias pcolors='( x=`tput op` y=`printf %$((${COLUMNS}-6))s`;for i in {0..256};do o=00$i;echo -e ${o:${#o}-3:3} `tput setaf $i;tput setab $i`${y// /=}$x;done; )'
 
-#alias mocp="mocp --theme trasparent-background"
 export TERM=xterm-256color
 
 # On branch this return the branch name else '(no branch)'.
@@ -248,7 +217,7 @@ function print_git_info()
 function isD_w()
 {
     IFS=' ' data=($(ls -l -d $(pwd)))
-    if [[ "${data[0]:8:1}" == "w" || ( "${data[2]}" == "$(whoami)" &&  "${data[0]:2:1}" == "w"  ) || ( "${data[3]}" == "id -g -n $(whoami)" && "${data[0]:5:1}" == "w") ]]
+    if [[ $(id -u) == 0  || "${data[0]:8:1}" == "w" || ( "${data[2]}" == "$(whoami)" &&  "${data[0]:2:1}" == "w"  ) || ( "${data[3]}" == "id -g -n $(whoami)" && "${data[0]:5:1}" == "w") ]]
     then
         echo "can write"
     else 

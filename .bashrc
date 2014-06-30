@@ -32,15 +32,19 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
-function ccd()
+function scd()
 {
     cd $1
     echo "$(pwd)" > ~/.lastcd
 }
-alias cd='ccd'
+alias cd='scd'
 alias lcd='cd "$(cat ~/.lastcd)"'
 
 alias pcolors='( x=`tput op` y=`printf %$((${COLUMNS}-6))s`;for i in {0..256};do o=00$i;echo -e ${o:${#o}-3:3} `tput setaf $i;tput setab $i`${y// /=}$x;done; )'
+alias pmh='su -c pm-hibernate'
+alias pms='su -c pm-suspend'
+alias pmm='su -c pm-suspend-hybrid'
+
 
 export TERM=xterm-256color
 

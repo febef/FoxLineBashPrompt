@@ -6,6 +6,7 @@
 [[ $- != *i* ]] && return
 
 export PATH=$PATH:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games
+export PATH="$HOME/bin:$PATH"
 
 export LANG=en_US.UTF-8
 export EDITOR="vim"
@@ -32,6 +33,20 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
+function duush()
+{
+  while (true)
+  do
+    clear
+    du -sh $(pwd)
+    for i in $(ls $(pwd))
+    do
+      du -sh $i
+    done
+    sleep 1s
+  done
+}
+
 function scd()
 {
     cd $1
@@ -40,11 +55,16 @@ function scd()
 alias cd='scd'
 alias lcd='cd "$(cat ~/.lastcd)"'
 
+alias tree='tree -C'
+alias apt!='su -c "aptitude update && aptitude upgrade"'
 alias pcolors='( x=`tput op` y=`printf %$((${COLUMNS}-6))s`;for i in {0..256};do o=00$i;echo -e ${o:${#o}-3:3} `tput setaf $i;tput setab $i`${y// /=}$x;done; )'
+
+alias sshr2d2='sshpass -p "r3gh" ssh -o StrictHostKeyChecking=no febef@10.0.0.201'
+
 alias pmh='su -c pm-hibernate'
 alias pms='su -c pm-suspend'
 alias pmm='su -c pm-suspend-hybrid'
-
+alias poff='su -c poweroff'
 
 export TERM=xterm-256color
 
@@ -175,19 +195,19 @@ function get_git_status()
 
     # Iterate through all the cases and if it matches, then echo
     if [[ "$dirty_branch" == 1 && "$branch_ahead" == 1 && "$branch_behind" == 1 ]]; then
-        echo "⬢"
+        echo "⬢ dirty & ahead & behind "
     elif [[ "$dirty_branch" == 1 && "$branch_ahead" == 1 ]]; then
-        echo "▲"
+        echo "▲ dirty & ahead "
     elif [[ "$dirty_branch" == 1 && "$branch_behind" == 1 ]]; then
-        echo "▼"
+        echo " ▼ dirty & behind "
     elif [[ "$branch_ahead" == 1 && "$branch_behind" == 1 ]]; then
-        echo "⬡"
+        echo " ⬡ ahead & behind "
     elif [[ "$branch_ahead" == 1 ]]; then
-        echo "△"
+        echo " △ ahead "
     elif [[ "$branch_behind" == 1 ]]; then
-        echo "▽"
+        echo " ▽ behind "
     elif [[ "$dirty_branch" == 1 ]]; then
-        echo "*"
+      echo " * dirty "
     fi
 }
 
@@ -313,7 +333,7 @@ function print_user()
     fi 
     tput sgr0
     tput setaf 233
-    !(is_on_git) && echo -n ""
+    ! $(is_on_git) && echo -n ""
 
     tput sgr0
 }
@@ -326,3 +346,22 @@ function save_old_comand_result()
 PS1="\$(save_old_comand_result)\$(print_location)\$(print_user)\
 \$(is_on_git && print_git_info)
 "
+
+pidof mate-terminal 1,2>/dev/null
+if [ "$?" != "1" ]
+then
+
+  function has-session()
+  {
+      tmux has-session -t $1 2>/dev/null
+  }
+
+  pidof tmux 1,2> /dev/null
+  if [ "$?" == "1" ]
+  then
+    tmux new-session -s febef  \; new-session -d -s main -n irssi irssi \; neww -dk -n mpd -t main ncmpcpp  \; neww -dk -n youtube -t main mpsyt
+  elif [[ -z "$TMUX" ]]
+  then
+    tmux
+  fi
+fi

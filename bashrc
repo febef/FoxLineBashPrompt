@@ -315,6 +315,13 @@ function print_user()
         tput setaf 166
     fi
     echo -n "$(whoami)"
+    tput bold
+    tput setaf 236
+    echo -n "at"
+    tput sgr0
+    tput setab 233
+    tput setaf 242
+    echo -n "$(uname -n)"
     if [ "$(cat ~/.socr.bash)" == "0" ]
     then
         tput setaf 34

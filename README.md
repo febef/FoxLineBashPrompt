@@ -3,8 +3,7 @@ FoxLineBashPrompt
 
 FLBP is a simple  configuration for bash... PS1...
 
-![FoxLineBashPrompt screenshot][screenshot]
-[screenshot]: screenshot.png
+![FoxLineBashPrompt screenshot](screenshot.png)
 
 
 How to test
@@ -33,5 +32,7 @@ Run the following commands in terminal:
         fc-cache -vf
         mv 10-powerline-symbols.conf /etc/fonts/conf.d/
 
-=================================================
-Thanks to sexy-bash-prompt : https://github.com/twolfson/sexy-bash-prompt
+
+--------------------------------------------------------------------------------------
+
+» Thanks to sexy-bash-prompt : https://github.com/twolfson/sexy-bash-prompt
